@@ -2,6 +2,8 @@ import { prisma } from "@/lib/db/prisma";
 import { redirect } from "next/navigation";
 import FormSubmitButton from "../components/FormSubmitButton";
 import ProductCard from "../components/ProductCard";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import {getServerSession} from "next-auth";
 
 // Overriding the metadata for this page by changing the title
 export const metadata = {
@@ -10,7 +12,13 @@ export const metadata = {
 
 async function addProduct(formData: FormData) {
     "use server";
-    console.log("Rain")
+
+    const session = await getServerSession(authOptions);
+
+    if(!session) {
+      redirect("/api/auth/signin?callbackUrl=/add-product");
+    }
+
     const name = formData.get("name")?.toString();
     const description = formData.get("description")?.toString();
     const imageUrl = formData.get("imageUrl")?.toString();
@@ -20,6 +28,12 @@ async function addProduct(formData: FormData) {
     if(!name || !description || !imageUrl || !price) {
         throw Error("Missing required fields");
     }
+
+    // for(let i = 0;i<50;i++) {
+    //   await prisma.product.create({
+    //     data: {name,description,imageUrl,price},
+    //   });
+    // }
     await prisma.product.create({
         data: {name,description,imageUrl,price},
     });
@@ -27,9 +41,15 @@ async function addProduct(formData: FormData) {
 
 }
 
-export default function AddProductPage() {
+export default async function AddProductPage() {
 //   Use Ctrl+D for margin selection in vs code so that u can change multiple mb-3's to mb-2's
 // In tailwind no style gets applied by default, we have to use some class names to get the desired style that we want  
+const session = await getServerSession(authOptions);
+
+if(!session) {
+  redirect("/api/auth/signin?callbackUrl=/add-product");
+}
+
 return (
     <div>
       <h1 className="mb-3 text-lg font-bold">Add Product</h1>

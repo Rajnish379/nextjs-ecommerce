@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+If there is topology server error that means ur IP address is not configured in mongo db. So please add it and wait for the changes to be deployed there. Then restart your app. 
+
 npm i daisyui prisma @prisma/client next-auth @auth/prisma-adapter prettier eslint-config-prettier prettier-plugin-tailwindcss zod
 
 Use the above command to install all the necessary packages 

@@ -1,9 +1,8 @@
 import { prisma } from "@/lib/db/prisma";
 import { redirect } from "next/navigation";
 import FormSubmitButton from "../components/FormSubmitButton";
-import ProductCard from "../components/ProductCard";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import {getServerSession} from "next-auth";
+import { getServerSession } from "next-auth";
 
 // Overriding the metadata for this page by changing the title
 export const metadata = {
